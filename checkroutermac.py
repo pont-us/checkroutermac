@@ -36,12 +36,15 @@ from typing import Optional
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--verbose", "-v", action="store_true", default=False)
+    parser.add_argument("mac", type=str, nargs="*",
+                        help="MAC address to include in the whitelist")
     args = parser.parse_args()
     level = logging.INFO if args.verbose else logging.WARNING
     logging.basicConfig(level=level)
+    macs = map(lambda s: s.lower(), args.mac)
     sys.exit(
         0
-        if get_router_mac_address() in ["00:00:00:00:00:00"]
+        if get_router_mac_address() in macs
         else 1
     )
 
